@@ -23,16 +23,17 @@ The parameters of `init` are:
 - `radius`: block radius
 
 ## Example
-In the following example, I replaced the raw codeblock syntax with the raw function, as I do not know, how to escape this in markdown.
-```typst
+````typst
 #set page(margin: 0.5cm, width: 14cm, height: auto)
 #import "@preview/idwtet:0.1.0"
 #show: idwtet.init
 
 == ouset package #text(gray)[(v0.1.1)]
-#raw(block: true, lang: "typst-ex", "import \"@preview/ouset:0.1.1\": ouset
+```typst-ex
+import "@preview/ouset:0.1.1": ouset
 $
-\"Expression 1\" ouset(&, <==>, \"Theorem 1\") \"Expression 2\"\
-               ouset(&, ==>,, \"Theorem 7\") \"Expression 3\"
-$")
+"Expression 1" ouset(&, <==>, "Theorem 1") "Expression 2"\
+               ouset(&, ==>,, "Theorem 7") "Expression 3"
+$
 ```
+````
