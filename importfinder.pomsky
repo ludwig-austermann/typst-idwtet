@@ -1,0 +1,10 @@
+# pomsky expression to create regex to match import "...": ...
+let varword = [word 'äöüÄÖÜß'];
+
+let fileword = varword | ['_-\/.'];
+let file = '"' !['@'] fileword (fileword | ' ')* '.typ"';
+
+let variable = varword (varword | ['_-'])*;
+let expr = ": " ("*" | ((variable ", ")* variable));
+
+"import " :(file) :(expr)?
