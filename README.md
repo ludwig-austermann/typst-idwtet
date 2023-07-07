@@ -1,5 +1,5 @@
 # Package IDWTET
-The name `idwtet` stands for "I Don't Wanna Type It Twice". It provides a `typst-ex` codeblock, which *shows **and** executes* typst code.
+The name `idwtet` stands for "I Don't Wanna Type Everything Twice". It provides a `typst-ex` codeblock, which *shows **and** executes* typst code.
 
 It is meant for code demonstration, e.g. when publishing a package, and provides some niceties:
 - the code should always be correct in the examples: As the example code is used for the code block, but also for evaluation, there is no need to write it twice
