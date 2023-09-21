@@ -15,7 +15,7 @@
   let eval-scope-values = (:)
   let eval-scope-codes = (:)
    for (k, v) in eval-scope.pairs() {
-    if type(v) == "dictionary" {
+    if type(v) == dictionary {
       if v.keys().contains("value") {
         eval-scope-values.insert(k, v.value)
       }
@@ -27,18 +27,31 @@
     }
   }
 
-  let substitute-remove-code(text) = eval-scope-codes.pairs().fold(
-    (text, text), (s, a) => (
-      s.at(0).replace(
-        escape-bracket + a.at(0) + escape-bracket,
-        a.at(1)
-      ),
-      s.at(1).replace(
-        escape-bracket + a.at(0) + escape-bracket,
-        ""
+  /// returns two modified versions of text:
+  /// - substitute: text without the hidden text by `%ENDHIDDEN%` AND with the replacements given by eval-scope-codes
+  ///      produces the code to be displayed
+  /// - remove: text with hidden text BUT without the replacements
+  ///      produces the code to be evaluated
+  let substitute-remove-code(text) = {
+    let splitted-text = text.split(escape-bracket + "ENDHIDDEN" + escape-bracket)
+    let (hidden-text, shown-text) = if splitted-text.len() == 1 {
+      ("", splitted-text.at(0))
+    } else {
+      splitted-text.slice(0, 2)
+    }
+    eval-scope-codes.pairs().fold(
+      (shown-text, hidden-text + shown-text), (s, a) => (
+        s.at(0).replace(
+          escape-bracket + a.at(0) + escape-bracket,
+          a.at(1)
+        ),
+        s.at(1).replace(
+          escape-bracket + a.at(0) + escape-bracket,
+          ""
+        )
       )
     )
-  )
+  }
   
   show raw.where(block: true, lang: "typst-ex"): it => {
     let (substituted-text, removed-text) = substitute-remove-code(it.text)
@@ -86,7 +99,7 @@
     )
     
     let result = eval(removed-text, scope: eval-scope-values)
-    let type-box = box(inset: 2pt, radius: 1pt, fill: white, text(code-font-size, "return type: " + raw(type(result))))
+    let type-box = box(inset: 2pt, radius: 1pt, fill: white, text(code-font-size, "return type: " + raw(str(type(result)))))
     let result-content = block(
       width: 100%,
       stroke: border + bcolor,

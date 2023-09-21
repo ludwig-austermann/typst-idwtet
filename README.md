@@ -13,7 +13,9 @@ However, there are some limitations:
 ## Usage
 Only one function is defined,
 `init(body, bcolor: luma(210), inset: 5pt, border: 2pt, radius: 2pt, content-font: "linux libertine", code-font-size: 9pt, content-font-size: 11pt, code-return-box: true, wrap-code: false, eval-scope: (:), escape-bracket: "%")`,
-which is supposed to be used with a show rule. Then raw codeblocks (with `block=true`) of the languages `typst`, `typst-ex`, `typst-code` and `typst-ex-code` are modified. The main feature of this package are `typst-ex` and `typst-ex-code`.
+which is supposed to be used with a show rule.
+
+Then raw codeblocks (with `block=true`) of the languages `typst`, `typst-ex`, `typst-code` and `typst-ex-code` are modified. The main feature of this package are `typst-ex` and `typst-ex-code`. The `typst` and  `typst-code` blocks do not evaluate anything, but their design fits that of the others.
 
 The parameters of `init` are:
 - `body`: for usage with show rule, hence the whole document.
@@ -28,6 +30,11 @@ The parameters of `init` are:
 - `wrap-code`: If to wrap the code in `#{` and `}`, to symbolize local scope.
 - `eval-scope`: A dictionary with the keys as the variable names and the values as another dictionary with keys `value` and `code`, both of these are optional. The former has the defined value, the latter the code recreate the variable, for usage in the code blocks.
 - `escape-bracket`: The text to wrap a variable with, to access the `code` part of a `eval-scope` variable.
+
+## Hiding code and replacements
+There are currently two methods to change the code:
+- use the `eval-scope` argument from the `init` function. There is a `code` field in the dictionaries, which enables the usage of the key escaped in `escape-bracket` to be replaced in the codeblock code half and to be removed in the codeblock result half, as the value is given via scope. Take a look at the example below, where `%ouset%` is used this way.
+- use the `ENDHIDDEN` feature. When escaped in `escape-bracket`, everything above the statement is removed from the codeblock code half BUT everything (without the `ENDHIDDEN` statement) is evaluated. Take a look at the example in the examples folder.
 
 ## Example
 ````typst
